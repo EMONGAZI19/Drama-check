@@ -1,1 +1,260 @@
-ide
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drama World Live TV</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    .loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      border-top-color: red;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      font-size: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    #scrollToTopBtn:hover {
+      background-color: #ff3333;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e1e1e;
+      padding: 10px 20px;
+      border-bottom: 2px solid red;
+      position: relative;
+    }
+
+    .logo img {
+      height: 45px;
+    }
+
+    .menu-icon {
+      font-size: 32px;
+      cursor: pointer;
+      color: #fff;
+      padding: 8px 12px;
+      background-color: #333;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .menu-icon:hover {
+      background-color: #444;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 15px 20px;
+      z-index: 1000;
+      width: 180px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .dropdown-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-menu a:hover {
+      color: #ffcc00;
+    }
+
+    .notice-bar {
+      background: #333;
+      color: #ffcc00;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    /* Live Now Carousel */
+    .live-carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+      margin: 30px 0;
+    }
+
+    .live-carousel {
+      display: flex;
+      transition: transform 1s ease-in-out;
+      white-space: nowrap;
+    }
+
+    .live-carousel-item {
+      min-width: 33.33%; /* 3 চ্যানেল প্রতি স্ক্রীনে */
+      background: #1e1e1e;
+      border-radius: 10px;
+      text-align: center;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .live-carousel-item img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .live-carousel-item span {
+      margin-top: 6px;
+      display: block;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: red;
+      color: #fff;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 4px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader-wrapper">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="header">
+    <div class="logo">
+      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgvvU0OLi3VZCQAUnQCaLKPzvjX8JKHB7h6-eHbILeVcRKado9TSMmQhgcJGx91XzJGDb-iIU2WH-VpVFB_peOjdG_kjHsjXEqveY91xL2t8x9u521L7SOuwBdxzZvrq16tXIwJR0yBRlIDaLT3MBAXYgZiFsutn7yX6XdEhvexOtRRED-flSHNSbHTaqMI=s150" alt="Drama World Logo" />
+    </div>
+    <div class="menu-icon" onclick="toggleMenu()">≡</div>
+    <div id="dropdown" class="dropdown-menu">
+      <a href="#Bangladeshi">Bangladeshi</a>
+      <a href="#Entertainment">Entertainment</a>
+      <a href="#Indian Bangla">Indian Bangla</a>
+      <a href="#Sports">Sports</a>
+      <a href="#Kids">Kids</a>
+      <a href="#Music">Music</a>
+    </div>
+  </div>
+
+  <div class="notice-bar">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      Welcome Drama World BD| Now Website is updatating for better experience | Enjoy the live stream on Drama World BD!
+    </marquee>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="চ্যানেল খুঁজুন..." />
+  </div>
+
+  <div class="live-carousel-wrapper">
+    <div class="live-carousel" id="liveCarousel">
+      <!-- চ্যানেলগুলো এখানে ডাইনামিক্যালি যোগ হবে -->
+    </div>
+  </div>
+
+  <div id="channelContainer"></div>
+  <button id="scrollToTopBtn" title="Go to top">↑</button>
+
+  <script src="channels.js"></script>
+  <script src="script.js"></script>
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgvvU0OLi3VZCQAUnQCaLKPzvjX8JKHB7h6-eHbILeVcRKado9TSMmQhgcJGx91XzJGDb-iIU2WH-VpVFB_peOjdG_kjHsjXEqveY91xL2t8x9u521L7SOuwBdxzZvrq16tXIwJR0yBRlIDaLT3MBAXYgZiFsutn7yX6XdEhvexOtRRED-flSHNSbHTaqMI=s150" alt="Drama World Logo" class="footer-logo">
+
+    <p class="footer-description">
+      Drama World — বিনোদনের এক অনন্য প্ল্যাটফর্ম যেখানে আপনি সবকিছু এক জায়গায় পান।
+    </p>
+
+    <div class="footer-links">
+      <a href="/about">আমাদের সম্পর্কে</a>
+      <a href="/privacy">প্রাইভেসি</a>
+      <a href="/terms">শর্তাবলী</a>
+      <a href="/contact">যোগাযোগ</a>
+    </div>
+
+    <div class="footer-social">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+        <svg fill="white" width="30" height="30" viewBox="0 0 24 24">
+          <path d="M22,12A10,10,0,1,0,10.73,21.94V14.89H8.06V12h2.67V9.8c0-2.64,1.57-4.1,4-4.1a16.34,16.34,0,0,1,2.37.21V8.44H16.69c-1.31,0-1.72.82-1.72,1.66V12h2.93l-.47,2.89H14.97v7.05A10,10,0,0,0,22,12Z"/>
+        </svg>
+      </a>
+
+      <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+        <svg fill="white" width="30" height="30" viewBox="0 0 24 24">
+          <path d="M22.46 6c-.77.35-1.6.59-2.46.69a4.26 4.26 0 001.88-2.36 8.41 8.41 0 01-2.68 1.03A4.22 4.22 0 0016.5 4c-2.35 0-4.26 1.9-4.26 4.25 0 .33.04.65.11.96A12 12 0 013 5.16a4.23 4.23 0 001.31 5.67 4.17 4.17 0 01-1.93-.53v.05c0 2 1.42 3.69 3.3 4.07a4.25 4.25 0 01-1.93.07 4.26 4.26 0 003.98 2.96A8.52 8.52 0 012 19.54a12 12 0 006.29 1.84c7.55 0 11.68-6.26 11.68-11.69 0-.18 0-.36-.01-.54A8.26 8.26 0 0022.46 6z"/>
+        </svg>
+      </a>
+
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+        <svg fill="white" width="30" height="30" viewBox="0 0 24 24">
+          <path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.055 1.987.24 2.448.413.598.223 1.027.49 1.48.942.452.452.72.881.942 1.48.173.46.358 1.277.413 2.448.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.055 1.17-.24 1.987-.413 2.448a3.856 3.856 0 01-.942 1.48 3.856 3.856 0 01-1.48.942c-.46.173-1.277.358-2.448.413-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.055-1.987-.24-2.448-.413a3.856 3.856 0 01-1.48-.942 3.856 3.856 0 01-.942-1.48c-.173-.46-.358-1.277-.413-2.448-.058-1.266-.07-1.65-.07-4.85s.012-3.584.07-4.85c.055-1.17.24-1.987.413-2.448a3.856 3.856 0 01.942-1.48 3.856 3.856 0 011.48-.942c.46-.173 1.277-.358 2.448-.413 1.266-.058 1.65-.07 4.85-.07M12 0C8.736 0 8.332.015 7.053.072 5.773.13 4.787.326 4.01.597 3.188.888 2.487 1.286 1.81 1.963.787 2.986.13 4.387.072 7.053.015 8.332 0 8.736 0 12s.015 3.668.072 4.947c.058 2.666.715 4.067 1.738 5.09.677.677 1.36 1.01 2.2 1.31.778.272 1.764.468 3.044.526C8.332 23.985 8.736 24 12 24s3.668-.015 4.947-.072c1.28-.058 2.266-.254 3.044-.526.84-.3 1.523-.633 2.2-1.31.677-.677 1.07-1.36 1.37-2.2.272-.778.468-1.764.526-3.044.058-1.28.072-1.684.072-4.948s-.015-3.668-.072-4.947c-.058-2.666-.715-4.067-1.738-5.09-.677-.677-1.36-1.01-2.2-1.31-.778-.272-1.764-.468-3.044-.526C15.668.015 15.264 0 12 0z"/>
+          <path d="M12 5.838A6.162 6.162 0 105.838 12 6.169 6.169 0 0012 5.838zm0 10.162A4 4 0 1116 12a4 4 0 01-4 4z"/>
+          <circle cx="18.406" cy="5.594" r="1.44"/>
+        </svg>
+      </a>
+    </div>
+
+    <p class="footer-copy">&copy; 2025 <strong>Drama World</strong> — সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
+</footer>
+</body>
+</html>
