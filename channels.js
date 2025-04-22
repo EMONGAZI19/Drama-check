@@ -1,58 +1,52 @@
 const channels = {
   "Live Now": [
     {
-      name: "Live Test 1",
+      name: "Test",
       img: "https://i.postimg.cc/d16Y2v56/20250421-001244.png",
-      url: "https://example.com/stream1.m3u8"
+      url: "https://tv.bdixtv24.co/toffee/live.php?id=7e00fee81848&e=.m3u8"
     },
     {
       name: "Live Test 2",
       img: "https://i.postimg.cc/d16Y2v56/20250421-001244.png",
-      url: "https://example.com/stream2.m3u8"
+      url: "https://raw.githubusercontent.com/EMONGAZI19/XYZ/refs/heads/main/starbd.dramaworld.m3u8"
     },
     {
       name: "Live Test 3",
       img: "https://i.postimg.cc/d16Y2v56/20250421-001244.png",
-      url: "https://example.com/stream3.m3u8"
+      url: "https://example.com/live.m3u8"
     }
   ]
 };
 
-// M3U থেকে চ্যানেল লোড করার ফাংশন
-async function loadChannelsFromM3U(m3uUrl) {
-  try {
-    const res = await fetch(m3uUrl);
-    const text = await res.text();
+fetch('https://m3u.in/pl/59e9a608c3dd91dae2d9ec1fc9dbf52a_0989dd3fbd4c4512315b5b25e668cbf1.m3u')
+  .then(res => res.text())
+  .then(text => {
     const lines = text.split('\n');
-    let currentGroup = "Others";
+    let currentChannel = {};
+    let category = "Bangladesh";
+    channels[category] = [];
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      const line = lines[i].trim();
       if (line.startsWith("#EXTINF")) {
-        const name = line.split(',').pop().trim();
+        const nameMatch = line.match(/,(.*)$/);
         const logoMatch = line.match(/tvg-logo="(.*?)"/);
-        const groupMatch = line.match(/group-title="(.*?)"/);
-        const logo = logoMatch ? logoMatch[1] : "https://i.postimg.cc/d16Y2v56/20250421-001244.png";
-        currentGroup = groupMatch ? groupMatch[1] : currentGroup;
-        const streamUrl = lines[i + 1]?.trim();
-
-        if (streamUrl && streamUrl.startsWith("http")) {
-          if (!channels[currentGroup]) channels[currentGroup] = [];
-          channels[currentGroup].push({
-            name: name,
-            img: logo,
-            url: streamUrl
-          });
-        }
+        currentChannel = {
+          name: nameMatch ? nameMatch[1] : "Unknown",
+          img: logoMatch ? logoMatch[1] : "https://i.postimg.cc/d16Y2v56/20250421-001244.png"
+        };
+      } else if (line && !line.startsWith("#")) {
+        currentChannel.url = line;
+        channels[category].push(currentChannel);
+        currentChannel = {};
       }
     }
 
-    // চাইলে এখানে আপনি renderChannels(channels) কল করতে পারেন
-    // যাতে লোড শেষে UI-তে দেখায়
-  } catch (error) {
-    console.error("M3U লোড করতে সমস্যা:", error);
-  }
-}
-
-// এখানে আপনার প্লেলিস্ট লিংক বসান
-loadChannelsFromM3U("https://m3u.ch/pl/59e9a608c3dd91dae2d9ec1fc9dbf52a_0989dd3fbd4c4512315b5b25e668cbf1.m3u");
+    // Call your function to render channels here
+    if (typeof renderAllChannels === "function") {
+      renderAllChannels();
+    }
+  })
+  .catch(err => {
+    console.error("Playlist Load Failed", err);
+  });
