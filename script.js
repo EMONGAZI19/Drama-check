@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
           div.innerHTML = `
             <div class="thumbnail-container">
               <img src="${channel.img}" alt="${channel.name}" />
-              ${channel.isLive ? '<span class="live-badge">LIVE</span>' : ''}
             </div>
             <span>${channel.name}</span>
           `;
@@ -55,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
           div.innerHTML = `
             <div class="thumbnail-container">
               <img src="${channel.img}" alt="${channel.name}" />
-              ${channel.isLive ? '<span class="live-badge">LIVE</span>' : ''}
             </div>
             <span>${channel.name}</span>
           `;
@@ -87,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
           div.innerHTML = `
             <div class="thumbnail-container">
               <img src="${channel.img}" alt="${channel.name}" />
-              ${channel.isLive ? '<span class="live-badge">LIVE</span>' : ''}
             </div>
             <span>${channel.name}</span>
           `;
