@@ -1,5 +1,5 @@
 // M3U প্লেলিস্টের URL
-const m3u8Url = 'https://m3u.ch/pl/59e9a608c3dd91dae2d9ec1fc9dbf52a_0989dd3fbd4c4512315b5b25e668cbf1.m3u';
+const m3u8Url = 'https://m3u.ch/pl/a920ec72a4490f9105323c833625ae62_810974b647cd5a35c556bd346bb3402e.m3u';
 
 // ফাংশন যা M3U ফাইলকে পার্স করে চ্যানেল লোড করবে
 async function loadChannelsFromM3U8() {
